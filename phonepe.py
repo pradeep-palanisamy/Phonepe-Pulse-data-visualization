@@ -5,7 +5,7 @@ import mysql.connector
 import plotly_express as px
 import json
 import requests
-from PIL import Image
+
 
 
 #dataframe creation
@@ -97,7 +97,7 @@ def Transaction_count_amount(df,year):
     with col1:
 
         fig_amount = px.bar(Tran_Amount_Count_Year_group, x ="States", y = "Transaction_amount", 
-                        title=f"{year} TRANSACTION AMOUNT", color_discrete_sequence= px.colors.sequential.Redor_r,
+                        title=f"{year} TRANSACTION AMOUNT",color_discrete_sequence= px.colors.sequential.Redor_r,
                         height=650,width=650)
         st.plotly_chart(fig_amount)
     
@@ -107,8 +107,7 @@ def Transaction_count_amount(df,year):
                             title=f"{year} TRANSACTION COUNT", color_discrete_sequence= px.colors.sequential.Blugrn,
                             height=650,width=650)
         st.plotly_chart(fig_count)
-
-
+                 
     
     col1,col2 = st.columns(2)
 
@@ -127,7 +126,7 @@ def Transaction_count_amount(df,year):
 
 
         fig_india_1 = px.choropleth(Tran_Amount_Count_Year_group, geojson = data1, locations="States",featureidkey="properties.ST_NM", color= "Transaction_amount",
-                                    color_continuous_scale="Rainbow", range_color=(Tran_Amount_Count_Year_group["Transaction_amount"].min(),Tran_Amount_Count_Year_group["Transaction_amount"].max()),
+                                    color_continuous_scale="Reds", range_color=(Tran_Amount_Count_Year_group["Transaction_amount"].min(),Tran_Amount_Count_Year_group["Transaction_amount"].max()),
                                     hover_name="States", title=f"{year} TRANSACTION AMOUNT", fitbounds="locations",height=650,width=650)
 
 
@@ -137,7 +136,7 @@ def Transaction_count_amount(df,year):
 
     with col2:
         fig_india_2 = px.choropleth(Tran_Amount_Count_Year_group, geojson = data1, locations="States",featureidkey="properties.ST_NM", color= "Transaction_count",
-                                    color_continuous_scale="Rainbow", range_color=(Tran_Amount_Count_Year_group["Transaction_count"].min(),Tran_Amount_Count_Year_group["Transaction_count"].max()),
+                                    color_continuous_scale="blues", range_color=(Tran_Amount_Count_Year_group["Transaction_count"].min(),Tran_Amount_Count_Year_group["Transaction_count"].max()),
                                     hover_name="States", title=f"{year} TRANSACTION COUNT", fitbounds="locations",height=650,width=650)
 
 
@@ -765,6 +764,7 @@ def Top_chart_registered_users(table_name):
 
         st.plotly_chart(fig_bar_1)
 
+
     #plot 2
     query_2 = f'''select States, sum(registeredUsers) as registeredUsers
                 from {table_name}
@@ -817,30 +817,16 @@ def Top_chart_registered_users(table_name):
 #streamlit part
 
 st.set_page_config(layout="wide")
-st.title("PHONEPE DATA VISUALIZATION AND EXPLORATION")
 
-
-with st.sidebar:
-
-    select = option_menu("Dashboard",["HOME", "DATA EXPLORATION", "TOP CHARTS"])
+select = option_menu("PHONEPE DATA VISUALIZATION AND EXPLORATION",options=["HOME", "DATA EXPLORATION", "TOP CHARTS"],orientation="horizontal",
+                     icons=["house","database","bar-chart-fill"])
 
 if select == "HOME" :
 
-    col1,col2= st.columns(2)
+    st.header("PHONEPE")
 
-    with col1:
-        st.header("PHONEPE")
-        st.subheader("INDIA'S BEST TRANSACTION APP")
-        st.markdown("PhonePe  is an Indian digital payments and financial technology company")
-        st.write("****FEATURES****")
-        st.write("****Credit & Debit card linking****")
-        st.write("****Bank Balance check****")
-        st.write("****Money Storage****")
-        st.write("****PIN Authorization****")
-        st.download_button("DOWNLOAD THE APP NOW", "https://www.phonepe.com/app-download/")
-    with col2:
         
-        st.image("C:/Users/prade/OneDrive/Desktop/phonepe project/Untitled.jpg")
+    st.image("C:/Users/prade/OneDrive/Desktop/phonepe project/Untitled.jpg")
 
 
 
@@ -850,6 +836,7 @@ if select == "HOME" :
 elif select == "DATA EXPLORATION":
 
     tab1, tab2, tab3 = st.tabs(["Aggregated Analysis", "Map Analysis", "Top Analysis"])
+    #tab = st.tabs(["Aggregated Analysis", "Map Analysis", "Top Analysis"])
 
     with tab1:
 
